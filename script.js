@@ -42,6 +42,7 @@ function renderMovies(movies){
 
       moviesList.classList.add('disactive');
       document.querySelector('.trailer').classList.add('disactive');
+      document.querySelector('.load-btn').style.cssText='display: none';
       const info = document.createElement('div');
       info.classList.add('movie-info');
       info.innerHTML=`
@@ -60,7 +61,7 @@ function renderMovies(movies){
         info.remove();
         moviesList.classList.remove('disactive');
         document.querySelector('.trailer').classList.remove('disactive');
-
+        document.querySelector('.load-btn').style.cssText='display: block';
       })
     })
     moviesList.appendChild(li);
@@ -99,6 +100,7 @@ function loadMore (){
 
     const butt = document.createElement('button');
     butt.textContent='Click';
+    butt.classList.add('load-btn');
     container.appendChild(butt);
     butt.addEventListener('click', async(e)=>{
       e.preventDefault();
