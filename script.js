@@ -51,6 +51,19 @@ btn.addEventListener('click', async (e) => {
   }
 
 });
+btn.addEventListener('keydown', async (e) => {
+  if(e.key === 'Enter'){
+    moviesList.innerHTML = '';
+    curQuery = input.value
+    const result = await  a.fetchMovies(`${curQuery}`,currentPage)
+    renderMovies(result.results)
+    input.value = '';
+    totalPages = result.total_pages;
+    if(currentPage<totalPages){
+      loadMore();
+    }
+  }
+})
 
 function loadMore (){
 
