@@ -51,7 +51,7 @@ btn.addEventListener('click', async (e) => {
   }
 
 });
-btn.addEventListener('keydown', async (e) => {
+document.addEventListener('keydown', async (e) => {
   if(e.key === 'Enter'){
     moviesList.innerHTML = '';
     curQuery = input.value
