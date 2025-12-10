@@ -149,3 +149,110 @@ input::placeholder {
   height: 100%;
   border: 0;
 }
+a{
+  text-decoration: none;
+  color:white;
+}
+.disactive{
+  display:none;
+}
+/* СТРАНИЦА С ПОДРОБНОСТЯМИ О ФИЛЬМЕ */
+.movie-info {
+  background-color: #1c1c1c;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+  margin-top: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+.movie__title {
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.movie__description {
+  display: flex;
+  gap: 20px;
+}
+
+/* Картинка в описании */
+.movie__description img {
+  width: 280px;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+/* Текст описания */
+.movie__overview {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #ccc;
+}
+
+.movie__btn {
+  margin-top: 20px;
+  display: block;
+  padding: 12px 20px;
+  background: #e50914;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.movie__btn:hover {
+  background: #b00610;
+}
+
+/* Адаптив */
+@media (max-width: 768px) {
+  .movie__description {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .movie__description img {
+    width: 70%;
+    margin: 0 auto;
+  }
+
+  .movie__title {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .movie__description img {
+    width: 100%;
+  }
+
+  .movie__overview {
+    font-size: 15px;
+  }
+}
+
+.playlists-iframe {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  height: 0;
+  margin-top: 30px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+}
+
+.playlists-iframe iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 12px;
+}

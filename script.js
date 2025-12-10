@@ -27,12 +27,42 @@ function renderMovies(movies){
     const li= document.createElement('li');
     li.classList.add('movie-item');
     li.innerHTML=`
+ <a class="card__link" href="#">
     <h1>${movie.title}</h1>
     <p>${movie.vote_average}</p>
     <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}"/>
     <p>Дорослий: ${movie.adult == true ? 'Так': 'Ні'}</p>
     <p>Дата релізу ${movie.release_date}</p>
+</a>
     `;
+    const information = li.querySelector('.card__link');
+    information.addEventListener('click', (e) =>{
+      e.preventDefault();
+
+
+      moviesList.classList.add('disactive');
+      document.querySelector('.trailer').classList.add('disactive');
+      const info = document.createElement('div');
+      info.classList.add('movie-info');
+      info.innerHTML=`
+ <h1 class="movie__title">${movie.title}</h1>
+        <div class="movie__description">
+          <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}"/>
+          <p class="movie__overview">${movie.overview}</p>
+        </div>
+        <button class="movie__btn">Back</button>
+      `;
+      container.prepend(info);
+      const btn3 = info.querySelector('.movie__btn');
+      btn3.addEventListener('click', (e) =>{
+        e.preventDefault();
+
+        info.remove();
+        moviesList.classList.remove('disactive');
+        document.querySelector('.trailer').classList.remove('disactive');
+
+      })
+    })
     moviesList.appendChild(li);
   });
 

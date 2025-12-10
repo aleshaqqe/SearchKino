@@ -19,21 +19,24 @@
 <body>
 <header>
   <div class="container">
-    <input  type="text" placeholder="Search">
-    <button class="btn" type="submit">Click to search!</button>
+    <input  type="text" placeholder="Пошук...">
+    <button class="btn" type="submit">Шукати!</button>
   </div>
 </header>
 <main>
   <div class="container main-content">
     <ul class="movies__list"></ul>
-    <h1>Популярний трейлер</h1>
-    <div class="video-container">
-      <iframe src="https://www.youtube.com/embed/36ZuHKT_fpc"
-              title="Пʼять ночей у Фредді 2. Офіційний трейлер"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen>
-      </iframe>
+    <div class="trailer">
+      <h1>Популярний трейлер</h1>
+      <div class="video-container" style="margin-top:30px;">
+        <iframe src="https://www.youtube.com/embed/36ZuHKT_fpc"
+                title="Пʼять ночей у Фредді 2. Офіційний трейлер"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen>
+        </iframe>
     </div>
+    </div>
+    <!-- <div class="playlists-iframe"><iframe name="playerfr" id="playerfr" loading="lazy" scrolling="no" src="https://ashdi.vip/vod/113547?" frameborder="0" width="100%" height="100%" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen;"></iframe></div> -->
   </div>
 </main>
 <script src="script.js"></script>
