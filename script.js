@@ -42,7 +42,7 @@ function renderMovies(movies){
 
       moviesList.classList.add('disactive');
       document.querySelector('.trailer').classList.add('disactive');
-      document.querySelector('.load-btn').style.cssText='display: none';
+      document.querySelector('.trailer').classList.add('disactive');
       const info = document.createElement('div');
       info.classList.add('movie-info');
       info.innerHTML=`
@@ -61,7 +61,7 @@ function renderMovies(movies){
         info.remove();
         moviesList.classList.remove('disactive');
         document.querySelector('.trailer').classList.remove('disactive');
-        document.querySelector('.load-btn').style.cssText='display: block';
+        document.querySelector('.more-btn').classList.remove('disactive');
       })
     })
     moviesList.appendChild(li);
@@ -69,38 +69,40 @@ function renderMovies(movies){
 
 }
 const a = new API();
-btn.addEventListener('click', async (e) => {
-  e.preventDefault();
+async function searchMovies() {
   moviesList.innerHTML = '';
   curQuery = input.value
   const result = await  a.fetchMovies(`${curQuery}`,currentPage)
   renderMovies(result.results)
   input.value = '';
   totalPages = result.total_pages;
+  const btn = document.querySelector('.more-btn');
+  if(btn){
+    btn.remove();
+  }
   if(currentPage<totalPages){
     loadMore();
+
   }
+}
+btn.addEventListener('click',  (e) => {
+  e.preventDefault();
+  currentPage=1;
+  searchMovies();
 
 });
 document.addEventListener('keydown', async (e) => {
   if(e.key === 'Enter'){
-    moviesList.innerHTML = '';
-    curQuery = input.value
-    const result = await  a.fetchMovies(`${curQuery}`,currentPage)
-    renderMovies(result.results)
-    input.value = '';
-    totalPages = result.total_pages;
-    if(currentPage<totalPages){
-      loadMore();
-    }
-  }
-})
+    e.preventDefault();
+    currentPage=1;
+    searchMovies();
+}})
 
 function loadMore (){
-
+    if(document.querySelector('.more-btn')) return
     const butt = document.createElement('button');
     butt.textContent='Click';
-    butt.classList.add('load-btn');
+    butt.classList.add('more-btn');
     container.appendChild(butt);
     butt.addEventListener('click', async(e)=>{
       e.preventDefault();
