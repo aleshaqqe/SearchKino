@@ -19,8 +19,43 @@ class API {
     return fetch(`https://api.themoviedb.org/3/search/movie?query=${encodedQuery}&include_adult=false&language=en-US&page=${page}`, options)
       .then(res => res.json());
   }
+  fetchTrailer(movieId){
+    let options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxY2QwN2QyOTk2MTJiYjNkYTQ3NTQwNWQ5MWFmMTI2ZSIsIm5iZiI6MTc2NTA0NzY1MC4xOTM5OTk4LCJzdWIiOiI2OTM0N2Q2MjU4OWMzM2JlMGE3MGE5ZmYiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.eECuWVgdTK8qFK3-k0LiIhOgaGoe75fi8ZzLGsV-tO8'
 
+      }
+    };
+
+    return fetch(`https://api.themoviedb.org/3/movie/${movieId}/videos?language=uk-UA`, options)
+      .then(res => res.json())
+      .then(data => {
+        const trailer = data.results.find(video=>video.type==='Trailer' && video.site==='YouTube');
+        return trailer ? trailer.key : 'Trailer not found';
+      });
+  }
+
+};
+function getTrailerIframe(key) {
+  if (!key) return null;
+
+  return `
+    <iframe 
+      width="100%" 
+      height="500" 
+      src="https://www.youtube.com/embed/${key}" 
+      title="Trailer"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+      allowfullscreen>
+    </iframe>
+  `;
 }
+
+
+
 function renderMovies(movies){
   movies.forEach(movie => {
 
@@ -51,9 +86,23 @@ function renderMovies(movies){
           <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}"/>
           <p class="movie__overview">${movie.overview}</p>
         </div>
+        <div class="trailer__container">
+       
+        
+        
+        </div>
         <button class="movie__btn">Back</button>
       `;
       container.prepend(info);
+
+      const trailerContainer = info.querySelector('.trailer__container');
+      a.fetchTrailer(movie.id).then(key=>{
+        if(!key || key==="Trailer not found"){
+          trailerContainer.innerHTML='Trailer not Found!'
+        }else{
+          trailerContainer.innerHTML=getTrailerIframe(key);
+        }
+      })
       const btn3 = info.querySelector('.movie__btn');
       btn3.addEventListener('click', (e) =>{
         e.preventDefault();
@@ -69,6 +118,7 @@ function renderMovies(movies){
 
 }
 const a = new API();
+
 async function searchMovies() {
   moviesList.innerHTML = '';
   curQuery = input.value
