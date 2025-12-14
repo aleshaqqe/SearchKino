@@ -5,9 +5,11 @@ const container = document.querySelector('.main-content');
 let totalPages = 0;
 let curQuery=''
 let currentPage = 1;
+let loadMoreVisible = true;
+
 class API {
 
-  fetchMovies(query='',page = 1){
+  async fetchMovies(query='',page = 1){
     let options = {
       method: 'GET',
       headers: {
@@ -19,7 +21,7 @@ class API {
     return fetch(`https://api.themoviedb.org/3/search/movie?query=${encodedQuery}&include_adult=false&language=en-US&page=${page}`, options)
       .then(res => res.json());
   }
-  fetchTrailer(movieId){
+  async fetchTrailer(movieId){
     let options = {
       method: 'GET',
       headers: {
@@ -55,7 +57,17 @@ function getTrailerIframe(key) {
 }
 
 
+function toggleLoadMore(show){
+  loadMoreVisible = show;
+  const btn = document.querySelector('.more-btn');
+  if(!btn) return;
+  if(show){
+    btn.classList.remove('disactive');
 
+  }else{
+    btn.classList.add('disactive');
+  }
+}
 function renderMovies(movies){
   movies.forEach(movie => {
 
@@ -68,15 +80,14 @@ function renderMovies(movies){
     <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}"/>
     <p>Дорослий: ${movie.adult == true ? 'Так': 'Ні'}</p>
     <p>Дата релізу ${movie.release_date}</p>
+    <svg class="favourite" style='width:50px; height:66px;'xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M0 64C0 28.7 28.7 0 64 0L320 0c35.3 0 64 28.7 64 64l0 417.1c0 25.6-28.5 40.8-49.8 26.6L192 412.8 49.8 507.7C28.5 521.9 0 506.6 0 481.1L0 64zM64 48c-8.8 0-16 7.2-16 16l0 387.2 117.4-78.2c16.1-10.7 37.1-10.7 53.2 0L336 451.2 336 64c0-8.8-7.2-16-16-16L64 48z"/></svg>
 </a>
     `;
     const information = li.querySelector('.card__link');
     information.addEventListener('click', (e) =>{
       e.preventDefault();
-
-
+      toggleLoadMore(false);
       moviesList.classList.add('disactive');
-      document.querySelector('.trailer').classList.add('disactive');
       document.querySelector('.trailer').classList.add('disactive');
       const info = document.createElement('div');
       info.classList.add('movie-info');
@@ -109,8 +120,9 @@ function renderMovies(movies){
 
         info.remove();
         moviesList.classList.remove('disactive');
-        document.querySelector('.trailer').classList.remove('disactive');
-        document.querySelector('.more-btn').classList.remove('disactive');
+          document.querySelector('.trailer').classList.remove('disactive');
+        toggleLoadMore(currentPage < totalPages);
+
       })
     })
     moviesList.appendChild(li);
@@ -149,23 +161,30 @@ document.addEventListener('keydown', async (e) => {
 }})
 
 function loadMore (){
-    if(document.querySelector('.more-btn')) return
-    const butt = document.createElement('button');
-    butt.textContent='Click';
-    butt.classList.add('more-btn');
-    container.appendChild(butt);
-    butt.addEventListener('click', async(e)=>{
-      e.preventDefault();
-      currentPage++;
-      const data= await a.fetchMovies(curQuery,currentPage);
-      renderMovies(data.results);
+  if(document.querySelector('.more-btn')) return;
 
-      totalPages=data.total_pages;
+  const butt = document.createElement('button');
+  butt.textContent='Load More';
+  butt.classList.add('more-btn');
 
-      if (currentPage >= data.total_pages) {
-        butt.remove();
-      }
+  // Применяем текущий статус видимости
+  if(!loadMoreVisible){
+    butt.classList.add('disactive');
+  }
 
-    });
+  container.appendChild(butt);
+
+  butt.addEventListener('click', async(e)=>{
+    e.preventDefault();
+    currentPage++;
+    const data= await a.fetchMovies(curQuery,currentPage);
+    renderMovies(data.results);
+
+    totalPages=data.total_pages;
+
+    if (currentPage >= data.total_pages) {
+      butt.remove();
+    }
+  });
 
 }
